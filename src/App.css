@@ -1,0 +1,892 @@
+/* ============================================================================= */
+/* APP.CSS - COMPLETE REWRITE WITH MINTY GREEN THEME                           */
+/* ============================================================================= */
+
+/* Reset and Base Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* CSS Variables for Light Theme (Default) */
+:root {
+  --bg-primary: #f8fafc;        /* Main background: very light gray */
+  --bg-secondary: #f1f5f9;      /* Panels/cards: subtle gray */
+  --bg-tertiary: #e5e7eb;       /* Form surfaces: lighter gray */
+  --bg-quaternary: #e2e8f0;     /* Hover/active: light gray */
+  --bg-hover: #e0e7ef;          /* Button/link hover: slightly darker gray */
+  --bg-card: #ffffff;           /* Pure white for cards */
+  --bg-navbar: rgba(255,255,255,0.95); /* Translucent white navbar */
+
+  /* Text */
+  --text-primary: #18181b;      /* Main text: almost black */
+  --text-secondary: #334155;    /* Subheads: dark gray */
+  --text-tertiary: #64748b;     /* Captions: muted gray */
+  --text-muted: #94a3b8;        /* Muted text: light gray */
+  --text-inverse: #ffffff;      /* White on dark BGs */
+
+  /* Borders */
+  --border-primary: #e5e7eb;    /* Soft border */
+  --border-secondary: #cbd5e1;  /* Secondary border */
+  --border-hover: #94a3b8;      /* Hover border */
+
+  /* Accents */
+  --accent-primary: #2563eb;    /* Professional blue for highlights/buttons */
+  --accent-primary-hover: #1d4ed8;
+  --accent-primary-light: #dbeafe;
+
+  --accent-yellow: #f59e0b;
+  --accent-yellow-light: #fef9c3;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+  --shadow-md: 0 4px 6px rgba(0,0,0,0.10);
+  --shadow-lg: 0 10px 15px rgba(0,0,0,0.10);
+  --shadow-xl: 0 20px 25px rgba(0,0,0,0.10);
+
+  /* Gradients */
+  --gradient-primary: linear-gradient(to bottom right, #f1f5f9, #e2e8f0);
+  --gradient-accent: linear-gradient(to right, #2563eb, #1d4ed8);
+  --gradient-card: linear-gradient(to bottom, #ffffff, #f8fafc);
+}
+
+/* Dark Theme Variables */
+.dark-theme {
+  /* Background Colors */
+  --bg-primary: #0f172a;
+  --bg-secondary: #1e293b;
+  --bg-tertiary: #334155;
+  --bg-quaternary: #475569;
+  --bg-hover: #374151;
+  --bg-card: #1e293b;
+  --bg-navbar: rgba(30, 41, 59, 0.95);
+  
+  /* Text Colors */
+  --text-primary: #f8fafc;
+  --text-secondary: #cbd5e1;
+  --text-tertiary: #94a3b8;
+  --text-inverse: #0f172a;
+  --text-muted: #9ca3af;
+  
+  /* Border Colors */
+  --border-primary: #475569;
+  --border-secondary: #64748b;
+  --border-hover: #94a3b8;
+  
+  /* Accent Colors - Brighter minty green for dark mode */
+  --accent-primary: #26ad5e;
+  --accent-primary-hover: #10b981;
+  --accent-primary-light: rgba(52, 211, 153, 0.1);
+  --accent-green: #34d399;
+  --accent-green-hover: #10b981;
+  --accent-green-light: rgba(52, 211, 153, 0.1);
+  --accent-red: #f87171;
+  --accent-red-hover: #ef4444;
+  --accent-red-light: rgba(248, 113, 113, 0.1);
+  --accent-yellow: #fbbf24;
+  --accent-yellow-light: rgba(251, 191, 36, 0.1);
+  --accent-purple: #a78bfa;
+  --accent-purple-light: rgba(167, 139, 250, 0.1);
+  --accent-orange: #fb923c;
+  --accent-orange-light: rgba(251, 146, 60, 0.1);
+  
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -2px rgba(0, 0, 0, 0.4);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.6), 0 10px 10px -5px rgba(0, 0, 0, 0.5);
+  
+  /* Gradients */
+  --gradient-primary: linear-gradient(to bottom right, #0f172a, #1e293b);
+  --gradient-minty: linear-gradient(to right, #34d399, #10b981);
+  --gradient-card: linear-gradient(to bottom, #1e293b, #334155);
+}
+
+/* ============================================================================= */
+/* BASE ELEMENT STYLES                                                          */
+/* ============================================================================= */
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+  line-height: 1.6;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+html {
+  transition: background-color 0.3s ease;
+}
+
+/* ============================================================================= */
+/* AUTHENTICATION PAGE SPECIFIC FIXES                                           */
+/* ============================================================================= */
+
+/* Main authentication container backgrounds */
+.dark-theme .min-h-screen,
+.dark-theme .bg-gradient-to-br {
+  background: linear-gradient(to bottom right, #0f172a, #1e293b, #0f172a) !important;
+}
+
+/* Left panel background in dark mode */
+.dark-theme .bg-slate-900\/50,
+.dark-theme .bg-slate-900 {
+  background-color: rgba(15, 23, 42, 0.8) !important;
+}
+
+/* Authentication form card background */
+.dark-theme .bg-slate-800\/80 {
+  background-color: rgba(30, 41, 59, 0.9) !important;
+  border-color: rgba(71, 85, 105, 0.5) !important;
+}
+
+/* Text colors for authentication page */
+.dark-theme .text-slate-100,
+.dark-theme .text-white {
+  color: #f8fafc !important;
+}
+
+.dark-theme .text-slate-300 {
+  color: #cbd5e1 !important;
+}
+
+.dark-theme .text-slate-400 {
+  color: #94a3b8 !important;
+}
+
+.dark-theme .text-slate-500 {
+  color: #64748b !important;
+}
+
+/* Input fields in dark mode */
+.dark-theme .bg-slate-700 {
+  background-color: #334155 !important;
+  color: #f8fafc !important;
+}
+
+.dark-theme .border-slate-600 {
+  border-color: #475569 !important;
+}
+
+.dark-theme .border-slate-700\/50 {
+  border-color: rgba(51, 65, 85, 0.5) !important;
+}
+
+.dark-theme .placeholder-slate-400::placeholder {
+  color: #94a3b8 !important;
+}
+
+/* Demo credentials box in dark mode - CHANGED FROM BLUE TO MINTY GREEN */
+.dark-theme .bg-blue-900\/20,
+.dark-theme .bg-green-900\/20 {
+  background-color: rgba(32, 201, 151, 0.2) !important;
+}
+
+.dark-theme .border-blue-700\/50,
+.dark-theme .border-green-700\/50 {
+  border-color: rgba(32, 201, 151, 0.5) !important;
+}
+
+.dark-theme .text-blue-300,
+.dark-theme .text-green-300 {
+  color: var(--accent-primary) !important;
+}
+
+.dark-theme .text-blue-400,
+.dark-theme .text-green-400 {
+  color: var(--accent-primary-hover) !important;
+}
+
+/* Error messages in dark mode */
+.dark-theme .bg-red-900\/20 {
+  background-color: rgba(127, 29, 29, 0.2) !important;
+}
+
+.dark-theme .border-red-500 {
+  border-color: #ef4444 !important;
+}
+
+.dark-theme .text-red-300 {
+  color: #fca5a5 !important;
+}
+
+/* Button gradients in dark mode - CHANGED FROM BLUE TO MINTY GREEN */
+.dark-theme .bg-gradient-to-r.from-blue-600.to-blue-700,
+.dark-theme .bg-gradient-to-r.from-green-600.to-green-700 {
+  background: var(--gradient-minty) !important;
+}
+
+.dark-theme .bg-gradient-to-r.from-blue-600.to-blue-700:hover,
+.dark-theme .bg-gradient-to-r.from-green-600.to-green-700:hover {
+  background: linear-gradient(to right, #10b981, #059669) !important;
+}
+
+/* Social proof section in dark mode */
+.dark-theme .bg-slate-800\/50 {
+  background-color: rgba(30, 41, 59, 0.5) !important;
+}
+
+.dark-theme .bg-slate-600 {
+  background-color: #475569 !important;
+}
+
+.dark-theme .border-slate-800 {
+  border-color: #1e293b !important;
+}
+
+/* Green checkmark icons */
+.dark-theme .text-green-400 {
+  color: #4ade80 !important;
+}
+
+.dark-theme .text-green-300 {
+  color: #86efac !important;
+}
+
+/* Focus states for inputs in dark mode - CHANGED FROM BLUE TO MINTY GREEN */
+.dark-theme input:focus,
+.dark-theme textarea:focus,
+.dark-theme select:focus {
+  background-color: #334155 !important;
+  border-color: var(--accent-primary) !important;
+  color: #f8fafc !important;
+  box-shadow: 0 0 0 3px rgba(32, 201, 151, 0.1) !important;
+}
+
+/* ============================================================================= */
+/* NAVBAR SPECIFIC FIXES                                                        */
+/* ============================================================================= */
+
+/* Main navbar container */
+nav,
+.navbar,
+.nav-container {
+  background-color: var(--bg-navbar) !important;
+  color: var(--text-primary) !important;
+  border-bottom: 1px solid var(--border-primary) !important;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+
+/* Navbar brand/logo */
+.nav-brand,
+.navbar-brand {
+  color: var(--text-primary) !important;
+  font-weight: 600;
+}
+
+/* Navbar links and items */
+.nav-link,
+.navbar-nav .nav-link,
+.nav-item {
+  color: var(--text-secondary) !important;
+  transition: color 0.3s ease;
+}
+
+.nav-link:hover,
+.navbar-nav .nav-link:hover {
+  color: var(--accent-primary) !important;
+}
+
+/* Navbar buttons - CHANGED FROM BLUE TO MINTY GREEN */
+.nav-button,
+.navbar .btn,
+nav button {
+  background-color: var(--accent-primary);
+  color: var(--text-inverse);
+  border: none;
+  transition: all 0.3s ease;
+}
+
+.nav-button:hover,
+.navbar .btn:hover,
+nav button:hover {
+  background-color: var(--accent-primary-hover);
+  transform: translateY(-1px);
+}
+
+/* ============================================================================= */
+/* COMPONENT OVERRIDES                                                          */
+/* ============================================================================= */
+
+/* Cards and Containers */
+.card,
+.bg-white {
+  background-color: var(--bg-card) !important;
+  color: var(--text-primary) !important;
+  border: 1px solid var(--border-primary) !important;
+  box-shadow: var(--shadow-md);
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  box-shadow: var(--shadow-lg);
+  border-color: var(--border-hover);
+}
+
+/* Buttons */
+button {
+  transition: all 0.3s ease;
+}
+
+/* Primary buttons - CHANGED FROM BLUE TO MINTY GREEN */
+.btn-primary,
+.bg-blue-600 {
+  background-color: var(--accent-primary) !important;
+  border-color: var(--accent-primary) !important;
+  color: var(--text-inverse) !important;
+}
+
+.btn-primary:hover,
+.bg-blue-600:hover {
+  background-color: var(--accent-primary-hover) !important;
+  border-color: var(--accent-primary-hover) !important;
+  transform: translateY(-1px);
+}
+
+.btn-success,
+.bg-green-600 {
+  background-color: var(--accent-green) !important;
+  border-color: var(--accent-green) !important;
+  color: var(--text-inverse) !important;
+}
+
+.btn-success:hover,
+.bg-green-600:hover {
+  background-color: var(--accent-green-hover) !important;
+}
+
+.btn-danger,
+.bg-red-600 {
+  background-color: var(--accent-red) !important;
+  border-color: var(--accent-red) !important;
+  color: var(--text-inverse) !important;
+}
+
+.btn-danger:hover,
+.bg-red-600:hover {
+  background-color: var(--accent-red-hover) !important;
+}
+
+/* Secondary/Gray buttons */
+.btn-secondary,
+.bg-gray-200,
+.bg-gray-600 {
+  background-color: var(--bg-tertiary) !important;
+  border-color: var(--border-primary) !important;
+  color: var(--text-primary) !important;
+}
+
+.btn-secondary:hover,
+.bg-gray-200:hover,
+.bg-gray-600:hover {
+  background-color: var(--bg-hover) !important;
+}
+
+/* ============================================================================= */
+/* FORM ELEMENTS                                                                */
+/* ============================================================================= */
+
+input,
+textarea,
+select {
+  background-color: var(--bg-primary) !important;
+  color: var(--text-primary) !important;
+  border: 1px solid var(--border-primary) !important;
+  transition: all 0.3s ease;
+}
+
+/* Focus states - CHANGED FROM BLUE TO MINTY GREEN */
+input:focus,
+textarea:focus,
+select:focus {
+  background-color: var(--bg-primary) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--accent-primary) !important;
+  box-shadow: 0 0 0 3px rgba(32, 201, 151, 0.1) !important;
+  outline: none !important;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: var(--text-tertiary) !important;
+}
+
+/* ============================================================================= */
+/* BLUE TO MINTY GREEN TAILWIND OVERRIDES                                      */
+/* ============================================================================= */
+
+/* Background Color Overrides - BLUE TO MINTY GREEN */
+.bg-blue-50 {
+  background-color: var(--accent-primary-light) !important;
+}
+
+.bg-blue-100 {
+  background-color: var(--accent-primary-light) !important;
+}
+
+.bg-blue-500 {
+  background-color: var(--accent-primary) !important;
+}
+
+.bg-blue-600 {
+  background-color: var(--accent-primary) !important;
+}
+
+.bg-blue-700 {
+  background-color: var(--accent-primary-hover) !important;
+}
+
+/* Other background colors */
+.bg-gray-50 {
+  background-color: var(--bg-secondary) !important;
+}
+
+.bg-gray-100 {
+  background-color: var(--bg-tertiary) !important;
+}
+
+.bg-gray-900 {
+  background-color: var(--bg-primary) !important;
+}
+
+.bg-green-50 {
+  background-color: var(--accent-green-light) !important;
+}
+
+.bg-red-50 {
+  background-color: var(--accent-red-light) !important;
+}
+
+.bg-yellow-50 {
+  background-color: var(--accent-yellow-light) !important;
+}
+
+.bg-purple-50 {
+  background-color: var(--accent-purple-light) !important;
+}
+
+.bg-orange-50 {
+  background-color: var(--accent-orange-light) !important;
+}
+
+/* Text Color Overrides - BLUE TO MINTY GREEN */
+.text-blue-500 {
+  color: var(--accent-primary) !important;
+}
+
+.text-blue-600 {
+  color: var(--accent-primary) !important;
+}
+
+.text-blue-700 {
+  color: var(--accent-primary-hover) !important;
+}
+
+.text-blue-800 {
+  color: var(--accent-primary-hover) !important;
+}
+
+.text-blue-900 {
+  color: var(--accent-primary-hover) !important;
+}
+
+/* Other text colors */
+.text-gray-900,
+.text-gray-800 {
+  color: var(--text-primary) !important;
+}
+
+.text-gray-700,
+.text-gray-600 {
+  color: var(--text-secondary) !important;
+}
+
+.text-gray-500,
+.text-gray-400 {
+  color: var(--text-tertiary) !important;
+}
+
+.text-green-600,
+.text-green-700 {
+  color: var(--accent-green) !important;
+}
+
+.text-red-600,
+.text-red-700 {
+  color: var(--accent-red) !important;
+}
+
+.text-yellow-600,
+.text-yellow-700 {
+  color: var(--accent-yellow) !important;
+}
+
+.text-purple-600,
+.text-purple-700 {
+  color: var(--accent-purple) !important;
+}
+
+.text-orange-600,
+.text-orange-700 {
+  color: var(--accent-orange) !important;
+}
+
+/* Border Color Overrides - BLUE TO MINTY GREEN */
+.border-blue-200 {
+  border-color: var(--accent-primary-light) !important;
+}
+
+.border-blue-300 {
+  border-color: var(--accent-primary) !important;
+}
+
+.border-blue-500 {
+  border-color: var(--accent-primary) !important;
+}
+
+/* Other border colors */
+.border-gray-200,
+.border-gray-300 {
+  border-color: var(--border-primary) !important;
+}
+
+.border-green-200,
+.border-green-300 {
+  border-color: var(--accent-green) !important;
+}
+
+.border-red-200,
+.border-red-300 {
+  border-color: var(--accent-red) !important;
+}
+
+/* Hover State Overrides - BLUE TO MINTY GREEN */
+.hover\:bg-blue-50:hover {
+  background-color: var(--accent-primary-light) !important;
+}
+
+.hover\:bg-blue-100:hover {
+  background-color: var(--accent-primary-light) !important;
+}
+
+.hover\:border-blue-300:hover {
+  border-color: var(--accent-primary) !important;
+}
+
+.hover\:border-blue-500:hover {
+  border-color: var(--accent-primary) !important;
+}
+
+.hover\:text-blue-600:hover {
+  color: var(--accent-primary) !important;
+}
+
+.hover\:text-blue-700:hover {
+  color: var(--accent-primary-hover) !important;
+}
+
+/* Focus State Overrides - BLUE TO MINTY GREEN */
+.focus\:ring-blue-500:focus {
+  box-shadow: 0 0 0 3px rgba(32, 201, 151, 0.2) !important;
+}
+
+.focus\:ring-blue-200:focus {
+  box-shadow: 0 0 0 3px rgba(32, 201, 151, 0.1) !important;
+}
+
+.focus\:border-blue-500:focus {
+  border-color: var(--accent-primary) !important;
+}
+
+/* ============================================================================= */
+/* DARK MODE TOGGLE COMPONENT                                                   */
+/* ============================================================================= */
+
+.theme-toggle-btn {
+  background-color: var(--bg-tertiary);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-primary);
+  border-radius: 8px;
+  padding: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.theme-toggle-btn:hover {
+  background-color: var(--bg-hover);
+  color: var(--accent-primary);
+  border-color: var(--accent-primary);
+  transform: translateY(-1px);
+}
+
+.theme-toggle-btn:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(32, 201, 151, 0.1);
+}
+
+.theme-icon {
+  transition: transform 0.3s ease;
+}
+
+.theme-toggle-btn:hover .theme-icon {
+  transform: rotate(15deg);
+}
+
+/* ============================================================================= */
+/* CHARTS AND RECHARTS COMPONENTS                                               */
+/* ============================================================================= */
+
+.recharts-tooltip-wrapper {
+  background-color: var(--bg-card) !important;
+  border: 1px solid var(--border-primary) !important;
+  border-radius: 8px !important;
+  box-shadow: var(--shadow-lg) !important;
+}
+
+.recharts-tooltip-content {
+  background-color: var(--bg-card) !important;
+  color: var(--text-primary) !important;
+  border: none !important;
+}
+
+.recharts-cartesian-axis-tick-value {
+  fill: var(--text-secondary) !important;
+}
+
+.recharts-legend-item-text {
+  color: var(--text-primary) !important;
+}
+
+.recharts-cartesian-grid-horizontal line,
+.recharts-cartesian-grid-vertical line {
+  stroke: var(--border-primary) !important;
+}
+
+/* ============================================================================= */
+/* EXPENSE TRACKER SPECIFIC STYLES                                              */
+/* ============================================================================= */
+
+/* Source Selection Pills */
+.source-pill {
+  transition: all 0.3s ease;
+  border: 1px solid var(--border-primary);
+  background-color: var(--bg-card);
+  color: var(--text-primary);
+}
+
+.source-pill:hover {
+  border-color: var(--accent-primary);
+  background-color: var(--accent-primary-light);
+}
+
+.source-pill.active {
+  background-color: var(--accent-primary);
+  color: var(--text-inverse);
+  border-color: var(--accent-primary);
+}
+
+/* Expense Cards */
+.expense-card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-primary);
+  transition: all 0.3s ease;
+}
+
+.expense-card:hover {
+  box-shadow: var(--shadow-lg);
+  border-color: var(--accent-primary);
+}
+
+/* Category Icons and Badges */
+.category-badge {
+  background-color: var(--accent-primary-light);
+  color: var(--accent-primary);
+  border: 1px solid var(--accent-primary);
+}
+
+/* Source Badges */
+.source-badge {
+  background-color: var(--bg-tertiary);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-primary);
+}
+
+/* ============================================================================= */
+/* ANIMATIONS AND TRANSITIONS                                                   */
+/* ============================================================================= */
+
+/* Smooth transitions for all themed elements */
+* {
+  transition-property: background-color, color, border-color, transform, box-shadow;
+  transition-duration: 0.3s;
+  transition-timing-function: ease;
+}
+
+/* Hover animations */
+.hover-lift:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.hover-scale:hover {
+  transform: scale(1.02);
+}
+
+/* Loading animations */
+.loading-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.loading-spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ============================================================================= */
+/* RESPONSIVE DESIGN                                                            */
+/* ============================================================================= */
+
+@media (max-width: 768px) {
+  .navbar {
+    padding: 0.5rem 1rem;
+  }
+  
+  .navbar-brand {
+    font-size: 1.1rem;
+  }
+  
+  .theme-toggle-btn {
+    padding: 6px;
+  }
+  
+  .card {
+    margin-bottom: 1rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  
+  .navbar {
+    flex-wrap: wrap;
+  }
+  
+  .theme-toggle-btn {
+    margin-left: auto;
+  }
+}
+
+/* ============================================================================= */
+/* ACCESSIBILITY IMPROVEMENTS                                                   */
+/* ============================================================================= */
+
+/* Focus indicators - CHANGED FROM BLUE TO MINTY GREEN */
+button:focus,
+input:focus,
+select:focus,
+textarea:focus {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: 2px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  :root {
+    --border-primary: #000000;
+    --text-secondary: #000000;
+  }
+  
+  .dark-theme {
+    --border-primary: #ffffff;
+    --text-secondary: #ffffff;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ============================================================================= */
+/* PRINT STYLES                                                                 */
+/* ============================================================================= */
+
+@media print {
+  body {
+    background-color: white !important;
+    color: black !important;
+  }
+  
+  .navbar,
+  .theme-toggle-btn,
+  button {
+    display: none !important;
+  }
+  
+  .card {
+    box-shadow: none !important;
+    border: 1px solid #ccc !important;
+  }
+}
+
+/* ============================================================================= */
+/* UTILITY CLASSES                                                              */
+/* ============================================================================= */
+
+.text-themed {
+  color: var(--text-primary);
+}
+
+.bg-themed {
+  background-color: var(--bg-primary);
+}
+
+.border-themed {
+  border-color: var(--border-primary);
+}
+
+.shadow-themed {
+  box-shadow: var(--shadow-md);
+}
+
+.gradient-themed {
+  background: var(--gradient-primary);
+}
+
+/* Force immediate theme application */
+.force-theme-update * {
+  transition: none !important;
+}
+
+/* ============================================================================= */
+/* END OF FILE                                                                  */
+/* ============================================================================= */
