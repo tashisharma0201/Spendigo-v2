@@ -26,10 +26,10 @@ const RupeeIcon = ({ size = 24, className = "" }) => (
 );
 
 const features = [
-  { icon: CreditCard, text: "Track UPI, Bank & Card expenses", emoji: "💳" },
-  { icon: BarChart3, text: "Generate detailed financial reports", emoji: "📊" },
-  { icon: Target, text: "Set and monitor budget goals", emoji: "🎯" },
-  { icon: Shield, text: "Secure cloud synchronization", emoji: "🔒" }
+  { icon: CreditCard, text: "Track UPI, Bank & Card expenses", emoji: "" },
+  { icon: BarChart3, text: "Generate detailed financial reports", emoji: "" },
+  { icon: Target, text: "Set and monitor budget goals", emoji: "" },
+  { icon: Shield, text: "Secure cloud synchronization", emoji: "" }
 ];
 
 const LandingAuth = () => {

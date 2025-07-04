@@ -58,7 +58,7 @@ const Footer = () => {
         <div style={footerStyles.projectText}>
           <span>Project by</span>
           <a 
-            href="https://github.com/tashisharma10" 
+            href="https://github.com/tashisharma0201" 
             target="_blank" 
             rel="noopener noreferrer"
             style={footerStyles.link}
@@ -69,9 +69,9 @@ const Footer = () => {
         
         <div style={footerStyles.links}>
           <span style={footerStyles.brand}>Spendigo</span>
-          <span style={footerStyles.separator}></span>
+          <span style={footerStyles.separator}>•</span>
           <a 
-            href="https://github.com/tashisharma10" 
+            href="https://github.com/tashisharma0201" 
             target="_blank" 
             rel="noopener noreferrer"
             style={footerStyles.link}
