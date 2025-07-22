@@ -15,32 +15,47 @@ function App() {
     <ThemeProvider>
       <AuthProvider>
         <Router>
-          <div className="App">
+          <div className="min-h-screen flex flex-col bg-gray-50">
             <Navigation />
-            <main className="main-content">
+            
+            <main className="flex-1">
               <Routes>
                 {/* Public Routes */}
                 <Route path="/auth" element={<Authentication />} />
                 
                 {/* Protected Routes */}
-                <Route path="/add-expense" element={
-                  <ProtectedRoute>
-                    <AddExpense />
-                  </ProtectedRoute>
-                } />
-                <Route path="/dashboard" element={
-                  <ProtectedRoute>
-                    <Dashboard />
-                  </ProtectedRoute>
-                } />
+                <Route 
+                  path="/add-expense" 
+                  element={
+                    <ProtectedRoute>
+                      <AddExpense />
+                    </ProtectedRoute>
+                  } 
+                />
+                
+                <Route 
+                  path="/dashboard" 
+                  element={
+                    <ProtectedRoute>
+                      <Dashboard />
+                    </ProtectedRoute>
+                  } 
+                />
                 
                 {/* Default redirect - authenticated users go to add-expense */}
-                <Route path="/" element={<Navigate to="/add-expense" replace />} />
+                <Route 
+                  path="/" 
+                  element={<Navigate to="/add-expense" replace />} 
+                />
                 
                 {/* 404 route - redirect to auth for unauthenticated, add-expense for authenticated */}
-                <Route path="*" element={<Navigate to="/auth" replace />} />
+                <Route 
+                  path="*" 
+                  element={<Navigate to="/auth" replace />} 
+                />
               </Routes>
             </main>
+            
             <Footer />
           </div>
         </Router>

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+// ✅ Removed direct Supabase import to prevent session conflicts
 import {
   Menu as Hamburger,
   X,
@@ -9,29 +10,44 @@ import {
   LogOut,
 } from 'lucide-react';
 
-// Custom Rupee Icon Component
+// ✅ Improved Rupee Icon Component
 const RupeeIcon = ({ size = 24, className = '' }) => (
-  <svg
-    width={size}
-    height={size}
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
+  <svg 
+    width={size} 
+    height={size} 
+    viewBox="0 0 24 24" 
+    fill="currentColor"
     className={className}
   >
-    <path d="M6 3h12" />
-    <path d="M6 8h12" />
-    <path d="m6 13 8.5 8" />
-    <path d="M6 13h3" />
-    <path d="M9 13c6.667 0 6.667-10 0-10" />
+    <path d="M7 6h8M7 10h6.5M7 6v4m0 0L15 18H7l6-8" 
+          stroke="currentColor" 
+          strokeWidth="2" 
+          strokeLinecap="round" 
+          strokeLinejoin="round"
+          fill="none" />
   </svg>
+);
+
+// Alternative Rupee Icon using Unicode character
+const RupeeIconText = ({ size = 24, className = '' }) => (
+  <div 
+    className={`flex items-center justify-center font-bold ${className}`}
+    style={{ 
+      fontSize: `${size * 0.8}px`, 
+      width: `${size}px`, 
+      height: `${size}px`,
+      lineHeight: 1 
+    }}
+  >
+    ₹
+  </div>
 );
 
 const Navigation = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
+  
+  // ✅ Fixed: Import logout from AuthContext
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
@@ -46,73 +62,113 @@ const Navigation = () => {
         setIsMobileMenuOpen(false);
       }
     };
+
     window.addEventListener('resize', onResize);
     return () => window.removeEventListener('resize', onResize);
   }, []);
 
-  const handleLogout = async () => {
-    setIsMobileMenuOpen(false);
-    await logout();
-    navigate('/auth');
-  };
+  // ✅ Fixed: Proper logout using AuthContext
+ // ✅ Enhanced logout with force logout fallback
+const handleLogout = async () => {
+  setIsMobileMenuOpen(false);
+  setIsLoggingOut(true);
+  
+  try {
+    console.log('Initiating logout...');
+    
+    // Use AuthContext logout method
+    const result = await logout();
+    
+    if (result.success) {
+      if (result.forced) {
+        console.log('Force logout completed, redirecting...');
+        // Don't navigate here - forceLogout will reload the page
+        return;
+      } else {
+        console.log('Normal logout successful, redirecting...');
+        navigate('/auth', { replace: true });
+      }
+    } else {
+      console.error('Logout failed:', result.error);
+      // Last resort: force page reload to clear everything
+      window.location.href = '/auth';
+    }
+  } catch (error) {
+    console.error('Unexpected logout error:', error);
+    // Emergency fallback: force page reload
+    window.location.href = '/auth';
+  } finally {
+    setIsLoggingOut(false);
+  }
+};
 
-  const toggleMobileMenu = () => setIsMobileMenuOpen(open => !open);
 
+  const toggleMobileMenu = () => setIsMobileMenuOpen(prev => !prev);
+
+  // Don't render navigation if no user is authenticated
   if (!user) return null;
 
   const navLinkClass = path =>
-    `flex items-center space-x-2 px-4 py-2 rounded transition-colors ${
+    `flex items-center space-x-2 px-4 py-2 rounded-lg transition-all duration-200 ${
       location.pathname === path
-        ? 'bg-gray-900 text-white'
-        : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
+        ? 'bg-slate-600 text-white shadow-lg'
+        : 'text-slate-300 hover:text-white hover:bg-slate-600/50'
     }`;
 
   return (
     <>
-      <nav className="bg-white sticky top-0 z-50 border-b border-gray-200">
+      {/* Main Navigation Bar - Dark Theme */}
+      <nav className="bg-slate-800 shadow-lg border-b border-slate-700">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             {/* Logo */}
-            <Link
-              to="/dashboard"
-              className="flex items-center space-x-3"
+            <Link 
+              to="/add-expense" 
+              className="flex items-center space-x-3 hover:opacity-80 transition-opacity"
               onClick={() => setIsMobileMenuOpen(false)}
             >
-              <div className="p-2 bg-gray-900 text-white rounded">
-                <RupeeIcon size={20} />
+              <div className="bg-white p-2 rounded-lg">
+                <RupeeIconText size={24} className="text-slate-800" />
               </div>
-              <span className="hidden sm:block text-xl font-bold text-gray-900">
+              <span className="text-2xl font-bold text-white">
                 Spendigo
               </span>
             </Link>
 
             {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center space-x-4">
+            <div className="hidden md:flex items-center space-x-2">
               <Link
                 to="/add-expense"
-                title="Add Expense"
-                className={navLinkClass('/add-expense')}
+                className={`flex items-center space-x-2 px-6 py-2 rounded-lg transition-all duration-200 font-medium ${
+                  location.pathname === '/add-expense'
+                    ? 'bg-blue-600 text-white shadow-lg'
+                    : 'text-slate-300 hover:text-white hover:bg-slate-600/50'
+                }`}
               >
-                <Plus size={18} />
+                <Plus className="w-4 h-4" />
                 <span>Add Expense</span>
               </Link>
 
               <Link
                 to="/dashboard"
-                title="Dashboard"
-                className={navLinkClass('/dashboard')}
+                className={`flex items-center space-x-2 px-6 py-2 rounded-lg transition-all duration-200 font-medium ${
+                  location.pathname === '/dashboard'
+                    ? 'bg-blue-600 text-white shadow-lg'
+                    : 'text-slate-300 hover:text-white hover:bg-slate-600/50'
+                }`}
               >
-                <BarChart3 size={18} />
+                <BarChart3 className="w-4 h-4" />
                 <span>Dashboard</span>
               </Link>
 
               <button
                 onClick={handleLogout}
-                title="Logout"
-                className="flex items-center space-x-2 px-4 py-2 rounded text-gray-600 hover:text-red-600 hover:bg-red-50 transition-colors"
+                disabled={isLoggingOut}
+                className="flex items-center space-x-2 px-6 py-2 rounded-lg transition-all duration-200 font-medium bg-green-600 text-white hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
+                title={isLoggingOut ? 'Logging out...' : 'Logout from account'}
               >
-                <LogOut size={18} />
-                <span>Logout</span>
+                <LogOut className={`w-4 h-4 ${isLoggingOut ? 'animate-spin' : ''}`} />
+                <span>{isLoggingOut ? 'Logging out...' : 'Logout'}</span>
               </button>
             </div>
 
@@ -120,53 +176,62 @@ const Navigation = () => {
             <div className="md:hidden">
               <button
                 onClick={toggleMobileMenu}
-                className={`p-2 rounded ${
-                  isMobileMenuOpen
-                    ? 'bg-gray-900 text-white'
-                    : 'text-gray-600 hover:bg-gray-100'
-                }`}
-                aria-label="Toggle menu"
+                className="inline-flex items-center justify-center p-2 rounded-md text-slate-300 hover:text-white hover:bg-slate-600/50 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500 transition-colors"
+                aria-expanded={isMobileMenuOpen}
+                aria-label="Toggle navigation menu"
               >
-                {isMobileMenuOpen ? <X size={24} /> : <Hamburger size={24} />}
+                <span className="sr-only">Open main menu</span>
+                {isMobileMenuOpen ? (
+                  <X className="block h-6 w-6" aria-hidden="true" />
+                ) : (
+                  <Hamburger className="block h-6 w-6" aria-hidden="true" />
+                )}
               </button>
             </div>
           </div>
         </div>
 
-        {/* Mobile Navigation Menu */}
-        <div
-          className={`md:hidden bg-white border-t border-gray-200 overflow-hidden transition-[max-height] duration-300 ${
-            isMobileMenuOpen ? 'max-h-60' : 'max-h-0'
-          }`}
-        >
-          <div className="py-2 space-y-1 px-4">
-            <Link
-              to="/add-expense"
-              onClick={toggleMobileMenu}
-              className={navLinkClass('/add-expense')}
-            >
-              <Plus size={20} />
-              <span>Add Expense</span>
-            </Link>
+        {/* Mobile Navigation Menu - Dark Theme */}
+        {isMobileMenuOpen && (
+          <div className="md:hidden">
+            <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-slate-800 border-t border-slate-700">
+              <Link
+                to="/add-expense"
+                className={`flex items-center space-x-3 px-3 py-3 rounded-md text-base font-medium transition-colors ${
+                  location.pathname === '/add-expense'
+                    ? 'bg-blue-600 text-white'
+                    : 'text-slate-300 hover:text-white hover:bg-slate-600/50'
+                }`}
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                <Plus className="w-5 h-5" />
+                <span>Add Expense</span>
+              </Link>
 
-            <Link
-              to="/dashboard"
-              onClick={toggleMobileMenu}
-              className={navLinkClass('/dashboard')}
-            >
-              <BarChart3 size={20} />
-              <span>Dashboard</span>
-            </Link>
+              <Link
+                to="/dashboard"
+                className={`flex items-center space-x-3 px-3 py-3 rounded-md text-base font-medium transition-colors ${
+                  location.pathname === '/dashboard'
+                    ? 'bg-blue-600 text-white'
+                    : 'text-slate-300 hover:text-white hover:bg-slate-600/50'
+                }`}
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                <BarChart3 className="w-5 h-5" />
+                <span>Dashboard</span>
+              </Link>
 
-            <button
-              onClick={handleLogout}
-              className="flex items-center space-x-2 px-4 py-2 w-full text-left text-gray-600 hover:text-red-600 hover:bg-red-50 transition-colors rounded"
-            >
-              <LogOut size={20} />
-              <span>Logout</span>
-            </button>
+              <button
+                onClick={handleLogout}
+                disabled={isLoggingOut}
+                className="flex items-center space-x-3 px-3 py-3 rounded-md text-base font-medium bg-green-600 text-white hover:bg-green-700 w-full text-left transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                <LogOut className={`w-5 h-5 ${isLoggingOut ? 'animate-spin' : ''}`} />
+                <span>{isLoggingOut ? 'Logging out...' : 'Logout'}</span>
+              </button>
+            </div>
           </div>
-        </div>
+        )}
       </nav>
     </>
   );
