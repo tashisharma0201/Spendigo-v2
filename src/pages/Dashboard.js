@@ -84,6 +84,7 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [error, setError] = useState('');
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [addBalanceForm, setAddBalanceForm] = useState({
     sourceId: '',
     amount: ''
@@ -548,55 +549,97 @@ const Dashboard = () => {
         </div>
       )}
       
-      {/* Header */}
-      <div className="bg-white shadow-sm border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-6">
-            <div className="flex items-center space-x-4">
-              <img
-                src={avatar2}
-                alt="Profile"
-                className="w-15 h-15 rounded-full"
-              />
-              <div>
-                <h1 className="text-2xl font-bold text-gray-900">Hello, {user?.email?.split('@')[0]}!</h1>
-                <p className="text-gray-600">
-                  Welcome back! Here's your financial overview.
-                </p>
-              </div>
-            </div>
-            
-            <div className="flex items-center space-x-4">
-              <button
-                onClick={refreshData}
-                disabled={refreshing}
-                className="p-2 text-gray-400 hover:text-gray-600"
-                title="Refresh data"
-              >
-                <RefreshCw className={`w-5 h-5 ${refreshing ? 'animate-spin' : ''}`} />
-              </button>
-              
-              <button
-                onClick={() => setIsBalanceVisible(!isBalanceVisible)}
-                className="p-2 text-gray-400 hover:text-gray-600"
-                title={isBalanceVisible ? 'Hide balances' : 'Show balances'}
-              >
-                {isBalanceVisible ? <Eye className="w-5 h-5" /> : <EyeOff className="w-5 h-5" />}
-              </button>
-              
-              <button
-                onClick={goToAddExpense}
-                className="bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center space-x-2 hover:bg-blue-700 transition-colors"
-              >
-                <Plus className="w-5 h-5" />
-                <span>Add Expense</span>
-              </button>
-              
-              
-            </div>
-          </div>
+     {/* Header */}
+<div className="bg-white shadow-sm border-b">
+  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    {/* Mobile header */}
+    <div className="flex items-center justify-between py-4 lg:hidden">
+      {/* Avatar on left */}
+      <img
+        src={avatar2}
+        alt="Profile"
+        className="w-12 h-12 rounded-full"
+      />
+
+      {/* Hello text */}
+      <div className="flex-1 pl-4">
+       <h1 className="text-xl font-bold text-gray-900 whitespace-normal break-words">
+  Hello, {user?.email?.split('@')[0]}!
+</h1>
+
+      </div>
+
+      {/* Right icons inline */}
+      <div className="flex items-center space-x-3">
+        <button
+          onClick={refreshData}
+          disabled={refreshing}
+          className="p-2 text-gray-400 hover:text-gray-600"
+          title="Refresh"
+        >
+          <RefreshCw className={`w-5 h-5 ${refreshing ? 'animate-spin' : ''}`} />
+        </button>
+        <button
+          onClick={() => setIsBalanceVisible(v => !v)}
+          className="p-2 text-gray-400 hover:text-gray-600"
+          title={isBalanceVisible ? 'Hide balances' : 'Show balances'}
+        >
+          {isBalanceVisible ? <Eye className="w-5 h-5" /> : <EyeOff className="w-5 h-5" />}
+        </button>
+        <button
+          onClick={goToAddExpense}
+          className="p-2 text-blue-600 hover:text-blue-800 focus:outline-none"
+          title="Add Expense"
+        >
+          <Plus className="w-6 h-6" />
+        </button>
+      </div>
+    </div>
+
+    {/* Desktop header */}
+    <div className="hidden lg:flex justify-between items-center py-6">
+      <div className="flex items-center space-x-4">
+        <img
+          src={avatar2}
+          alt="Profile"
+          className="w-15 h-15 rounded-full"
+        />
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900">
+            Hello, {user?.email?.split('@')[0]}!
+          </h1>
+          <p className="text-gray-600">
+            Welcome back! Here's your financial overview.
+          </p>
         </div>
       </div>
+      <div className="flex items-center space-x-4">
+        <button
+          onClick={refreshData}
+          disabled={refreshing}
+          className="p-2 text-gray-400 hover:text-gray-600"
+          title="Refresh data"
+        >
+          <RefreshCw className={`w-5 h-5 ${refreshing ? 'animate-spin' : ''}`} />
+        </button>
+        <button
+          onClick={() => setIsBalanceVisible(v => !v)}
+          className="p-2 text-gray-400 hover:text-gray-600"
+          title={isBalanceVisible ? 'Hide balances' : 'Show balances'}
+        >
+          {isBalanceVisible ? <Eye className="w-5 h-5" /> : <EyeOff className="w-5 h-5" />}
+        </button>
+        <button
+          onClick={goToAddExpense}
+          className="bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center space-x-2 hover:bg-blue-700 transition-colors"
+        >
+          <Plus className="w-5 h-5" />
+          <span>Add Expense</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Dashboard Cards */}
