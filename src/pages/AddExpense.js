@@ -37,8 +37,8 @@ const ExpenseTracker = () => {
   const recognitionRef = useRef(null);
   const recordingTimerRef = useRef(null);
 
-  // Perplexity API key
-  const PERPLEXITY_API_KEY = process.env.REACT_APP_PERPLEXITY_API_KEY;
+  // Google Gemini API key
+  const GEMINI_API_KEY = process.env.REACT_APP_GEMINI_API_KEY;
 
   // ✅ Fixed: Updated currentExpense state structure with proper field mapping
   const [currentExpense, setCurrentExpense] = useState({
@@ -492,34 +492,38 @@ const ExpenseTracker = () => {
     return false;
   };
 
-  // Perplexity AI Processing
-  const extractDataWithPerplexity = async (voiceText, retryCount = 0) => {
-    if (!PERPLEXITY_API_KEY) {
-      throw new Error('Perplexity API key not configured');
+  // Gemini AI Processing
+  const extractDataWithGemini = async (voiceText, retryCount = 0) => {
+    if (!GEMINI_API_KEY) {
+      throw new Error('Gemini API key not configured');
     }
     
     const maxRetries = 3;
     const baseDelay = 1000;
     
     try {
-      const response = await fetch('https://api.perplexity.ai/chat/completions', {
+      const response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}', {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${PERPLEXITY_API_KEY}`,
+         // 'Authorization': `Bearer ${GEMINI_API_KEY}`,
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          model: "sonar-pro",
-          messages: [
-            {
-              role: "system",
-              content: `You are an expert financial voice assistant. Extract structured expense data from voice input.
+  contents: [
+    {
+      parts: [
+        {
+          text: `
+You are an expert financial voice assistant.
 
-RESPONSE FORMAT: Return ONLY valid JSON:
+Extract structured expense data from voice input.
+
+Return ONLY valid JSON in this exact format:
+
 {
   "vendor": "Business Name",
   "amount": 25.99,
-  "date": "2025-07-21", 
+  "date": "2025-07-21",
   "category": "Food & Drink",
   "description": "Brief description",
   "payment_source_id": "source_id",
@@ -527,35 +531,44 @@ RESPONSE FORMAT: Return ONLY valid JSON:
   "reasoning": "Brief explanation"
 }
 
-Categories: Food & Drink, Transportation, Shopping, Entertainment, Healthcare, Utilities, Travel, Education, Business, Other
+Categories:
+Food & Drink, Transportation, Shopping, Entertainment, Healthcare, Utilities, Travel, Education, Business, Other
 
 Payment Sources:
-- Cash payments: return "cash_source"
-- UPI payments: return "upi_source"  
-- Bank/Card payments: return "bank_source"`
-            },
-            {
-              role: "user", 
-              content: `Extract expense data from: "${voiceText}"`
-            }
-          ],
-          temperature: 0.2,
-          max_tokens: 400,
-          stream: false
-        })
+- Cash payments → "cash_source"
+- UPI payments → "upi_source"
+- Bank/Card payments → "bank_source"
+
+Voice Input:
+"${voiceText}"
+          `
+        }
+      ]
+    }
+  ],
+  generationConfig: {
+    temperature: 0.2,
+    maxOutputTokens: 400
+  }
+})
       });
       
       if (!response.ok) {
         if (response.status === 429 && retryCount < maxRetries) {
           const delay = baseDelay * Math.pow(2, retryCount);
           await new Promise(resolve => setTimeout(resolve, delay));
-          return extractDataWithPerplexity(voiceText, retryCount + 1);
+          return extractDataWithGemini(voiceText, retryCount + 1);
         }
         throw new Error(`API error: ${response.status}`);
       }
       
       const data = await response.json();
-      return JSON.parse(data.choices[0].message.content);
+      if (!data.candidates || !data.candidates.length) {
+  throw new Error("No response from Gemini");
+}
+      const responseText =data.candidates[0].content.parts[0].text;
+      
+      return JSON.parse(responseText);
     } catch (error) {
       throw new Error(`API call failed: ${error.message}`);
     }
@@ -610,7 +623,7 @@ Payment Sources:
       } else {
         try {
           setIsProcessingAI(true);
-          result = await extractDataWithPerplexity(text);
+          result = await extractDataWithGemini(text);
           
           // Map AI result to correct field names
           if (result.payment_source_id) {
